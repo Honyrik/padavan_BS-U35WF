@@ -1,4 +1,4 @@
-# Docker образ для сборки прошивки Padavan на KIMAX BS-U35WF #
+# Docker образ для сборки прошивки Padavan для KIMAX BS-U35WF #
 ## Установка ##
 ```bash
 git clone https://github.com/Honyrik/padavan_BS-U35WF.git

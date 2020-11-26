@@ -45,6 +45,7 @@ RUN apt-get update \
             zip \
             graphviz \
             libpcap0.8-dev \
+            fakeroot \
             && rm -rf /var/lib/apt/lists/* 
 
 RUN mkdir -p /opt/padavan && \ 
@@ -53,20 +54,28 @@ RUN mkdir -p /opt/padavan && \
     chmod +x start.sh
 
 RUN echo '#!/bin/bash\n\
-sed -i "s/# CONFIG_RT2880_FLASH_16M is not set/CONFIG_RT2880_FLASH_16M=y/" padavan-ng/trunk/configs/boards/NEXX/WT3020H/kernel-3.4.x.config\n\
-sed -i "s/CONFIG_RT2880_FLASH_8M=y/# CONFIG_RT2880_FLASH_8M is not set/" padavan-ng/trunk/configs/boards/NEXX/WT3020H/kernel-3.4.x.config\n\
-sed -i "s/770000/F10000/" padavan-ng/trunk/configs/boards/NEXX/WT3020H/partitions.config\n\
-sed -i "s/7C0000/F60000/" padavan-ng/trunk/configs/boards/NEXX/WT3020H/partitions.config\n\
-sed -i "s/#CONFIG_FIRMWARE_ENABLE_EXT3/CONFIG_FIRMWARE_ENABLE_EXT3/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
-sed -i "s/#CONFIG_FIRMWARE_ENABLE_EXT2/CONFIG_FIRMWARE_ENABLE_EXT2/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
-sed -i "s/#CONFIG_FIRMWARE_ENABLE_XFS/CONFIG_FIRMWARE_ENABLE_XFS/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
-sed -i "s/#CONFIG_FIRMWARE_INCLUDE_NFSD/CONFIG_FIRMWARE_INCLUDE_NFSD/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
-sed -i "s/#CONFIG_FIRMWARE_INCLUDE_HDPARM/CONFIG_FIRMWARE_INCLUDE_HDPARM/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
-sed -i "s/#CONFIG_FIRMWARE_INCLUDE_MINIDLNA/CONFIG_FIRMWARE_INCLUDE_MINIDLNA/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
-sed -i "s/#CONFIG_FIRMWARE_INCLUDE_FIREFLY/CONFIG_FIRMWARE_INCLUDE_FIREFLY/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
-sed -i "s/#CONFIG_FIRMWARE_INCLUDE_FFMPEG_NEW/CONFIG_FIRMWARE_INCLUDE_FFMPEG_NEW/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
-sed -i "s/#CONFIG_FIRMWARE_INCLUDE_TRANSMISSION/CONFIG_FIRMWARE_INCLUDE_TRANSMISSION/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
-sed -i "s/#CONFIG_FIRMWARE_INCLUDE_TRANSMISSION_WEB_CONTROL/CONFIG_FIRMWARE_INCLUDE_TRANSMISSION_WEB_CONTROL/" padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n'\
+DIR=/opt/padavan\n\
+sed -i "s/# CONFIG_RT2880_FLASH_16M is not set/CONFIG_RT2880_FLASH_16M=y/" $DIR/padavan-ng/trunk/configs/boards/NEXX/WT3020H/kernel-3.4.x.config\n\
+sed -i "s/CONFIG_RT2880_FLASH_8M=y/# CONFIG_RT2880_FLASH_8M is not set/" $DIR/padavan-ng/trunk/configs/boards/NEXX/WT3020H/kernel-3.4.x.config\n\
+cd $DIR/padavan-ng/trunk/configs/boards/NEXX/WT3020H\n\
+rm -rf partitions.config\n\
+ln -s ../../pt_ralink_16m.config partitions.config\n\
+cd $DIR\n\
+sed -i "s/#CONFIG_FIRMWARE_ENABLE_EXT3/CONFIG_FIRMWARE_ENABLE_EXT3/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_ENABLE_EXT2/CONFIG_FIRMWARE_ENABLE_EXT2/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_ENABLE_XFS/CONFIG_FIRMWARE_ENABLE_XFS/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_INCLUDE_NFSD/CONFIG_FIRMWARE_INCLUDE_NFSD/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_INCLUDE_HDPARM/CONFIG_FIRMWARE_INCLUDE_HDPARM/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_INCLUDE_MINIDLNA/CONFIG_FIRMWARE_INCLUDE_MINIDLNA/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_INCLUDE_FIREFLY/CONFIG_FIRMWARE_INCLUDE_FIREFLY/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_INCLUDE_FFMPEG_NEW/CONFIG_FIRMWARE_INCLUDE_FFMPEG_NEW/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_INCLUDE_TRANSMISSION/CONFIG_FIRMWARE_INCLUDE_TRANSMISSION/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_INCLUDE_TRANSMISSION_WEB_CONTROL/CONFIG_FIRMWARE_INCLUDE_TRANSMISSION_WEB_CONTROL/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+sed -i "s/#CONFIG_FIRMWARE_INCLUDE_SMBD36/CONFIG_FIRMWARE_INCLUDE_SMBD36/" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+if ! grep "CONFIG_FIRMWARE_INCLUDE_SMBD36" $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config > /dev/null; then\n\
+echo "CONFIG_FIRMWARE_INCLUDE_SMBD36=y" >> $DIR/padavan-ng/trunk/configs/templates/nexx/wt3020h.config\n\
+fi\n\
+'\
 > /opt/padavan/patch_BS-U35WF.sh
 
 RUN chmod +x /opt/padavan/patch_BS-U35WF.sh

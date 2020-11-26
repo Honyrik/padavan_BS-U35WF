@@ -1,4 +1,4 @@
-# Docker образ для сборки прошивки Padavan для KIMAX BS-U35WF #
+# Docker образ для сборки прошивки Padavan для KIMAX BS-U35WF актуален на 26.11.2020 #
 ## Установка ##
 ```bash
 git clone https://github.com/Honyrik/padavan_BS-U35WF.git
@@ -18,7 +18,7 @@ docker run -it -v `pwd`/dist:/opt/dist --name padavan-BS-U35WF-builder padavan-l
 - Запускаем ./start.sh и ждем загрузку зависимостей
 
 ![Alt-текст](screen/1.png)
-- Выбираем Padavan-ng, жмем 1
+- Выбираем Padavan-ng, жмем 1 (1 - стабильная старая ветка не обновлялась почти год(26.11.2020), 2 - обновляется и самое новое сейчас можно ее (у меня стоит с нее))
 
 ![Alt-текст](screen/2.png)
 - Выходим из скрипта, Жмем Ctrl+C

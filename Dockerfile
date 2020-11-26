@@ -46,6 +46,14 @@ RUN apt-get update \
             graphviz \
             libpcap0.8-dev \
             fakeroot \
+            libboost-all-dev \
+            libboost-tools-dev \
+            libboost-thread-dev \
+            magics++ \
+            libgtk-3-0 \
+            libglib2.0-dev \
+            gir1.2-glib-2.0 \
+            intltool \
             && rm -rf /var/lib/apt/lists/* 
 
 RUN mkdir -p /opt/padavan && \ 

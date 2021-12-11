@@ -11,7 +11,7 @@ docker build -t padavan-local .
 ```
 ## Запуск ##
 ```bash
-docker run -it -v `pwd`/dist:/opt/dist --name padavan-BS-U35WF-builder padavan-local
+docker run -it --rm -v `pwd`/dist:/opt/dist --name padavan-BS-U35WF-builder padavan-local
 ```
 `pwd`/dist - любой путь до локальной папки куда будем перекладывать готовую прошивку, например c:\dist
 ## Сборка прошивки ##
@@ -54,6 +54,6 @@ docker run -it -v `pwd`/dist:/opt/dist --name padavan-BS-U35WF-builder padavan-l
 - После успешного сборки запоминаем название сборки и выходим из скрипта. Дважды жмем Shift+Q.
 
 ![Alt-текст](screen/13.png)
-- Копируем сборку в папку /opt/dist. После этого на локальной в папке будет доступна прошивка которую можно залить на устройство
+- Копируем сборку в папку cp padavan-ng/trunk/images/*.trx /opt/dist/. После этого на локальной в папке будет доступна прошивка которую можно залить на устройство
 
 ![Alt-текст](screen/14.png)

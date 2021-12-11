@@ -54,6 +54,7 @@ RUN apt-get update \
             libglib2.0-dev \
             gir1.2-glib-2.0 \
             intltool \
+            cmake \
             && rm -rf /var/lib/apt/lists/* 
 
 RUN mkdir -p /opt/padavan && \ 
